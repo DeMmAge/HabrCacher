@@ -12,7 +12,6 @@ class PageDownloaderTest {
     void shouldDownloadContentWhenPageNumberGiven() throws IOException {
         PageDownloader downloader = new PageDownloader();
         String output = downloader.download(1);
-
         assertNotNull(output);
     }
 }

@@ -53,7 +53,9 @@ public class ArticleParser {
         while (matcherTags.find()) {
             tags.append(matcherTags.group(1)).append(", ");
         }
-        tags.delete(tags.length() - 2, tags.length());
+        if (tags.length() > 2) {
+            tags.delete(tags.length() - 2, tags.length());
+        }
         builder.setTags(tags.toString());
 
         return builder.build();

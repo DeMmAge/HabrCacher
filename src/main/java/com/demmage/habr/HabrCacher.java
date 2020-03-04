@@ -6,8 +6,12 @@ import com.demmage.habr.dao.postgres.TableCreator;
 import com.demmage.habr.entities.Article;
 import com.demmage.habr.net.PageDownloader;
 import com.demmage.habr.parser.ArticleParser;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class HabrCacher {
 
@@ -15,18 +19,34 @@ public class HabrCacher {
     private PageDownloader downloader = new PageDownloader();
     private ArticleParser parser = new ArticleParser();
 
+    private final OkHttpClient httpClient = new OkHttpClient();
+    private String cachedPage = null; // TODO
+
     public HabrCacher() {
         new TableCreator().createTable();
     }
 
+    private int getPostCode(int post) {
+        Request request = new Request.Builder()
+                .url(PageDownloader.BASE_URL + post)
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            cachedPage = Objects.requireNonNull(response.body()).string();
+            return response.code();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public boolean checkPost(int post) {
+        return getPostCode(post) == 200;
+    }
+
     public boolean cache(int post) {
         try {
-            String page = downloader.download(post);
-            Article article = parser.parse(page, post);
+            Article article = parser.parse(downloader.download(post), post); // TODO: Cached page
             dao.cacheArticle(article);
-            System.out.println("Cached post " + post);
-        } catch (IOException e) {
-            System.out.println("Forbidden " + post);
         } catch (Exception e) {
             e.printStackTrace();
         }
