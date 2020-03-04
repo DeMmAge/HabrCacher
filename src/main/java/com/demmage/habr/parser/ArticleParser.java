@@ -13,7 +13,7 @@ public class ArticleParser {
     private static final String UNDEF = "Undef";
     private static final String ALL = "(.*?)";
 
-    public Article parse(String page) {
+    public Article parse(String page, int id) {
         Pattern pattern = Pattern.compile(START + ALL + END);
         Matcher matcher = pattern.matcher(page);
         String splitContent = "";
@@ -22,6 +22,7 @@ public class ArticleParser {
         }
         Article.Builder builder = new Article.Builder();
         builder.setCachedDate(Calendar.getInstance().getTime().toString());
+        builder.setHabrId(String.valueOf(id));
 
         Pattern patternAuthor = Pattern.compile("<span class=\"user-info__nickname user-info__nickname_small\">"
                 + ALL + "</span>");
@@ -38,6 +39,29 @@ public class ArticleParser {
         Matcher matcherTitle = patternTitle.matcher(splitContent);
         builder.setTitle(matcherTitle.find() ? matcherTitle.group(1) : UNDEF);
 
+        Pattern patternBody = Pattern.compile("div class=\"post__text post__text-html post__text_v1\" id=\"post-content-body\" data-io-article-url=\"https://habr.com/ru/post/" + id + "/\">"
+                + ALL + "</div>");
+        Matcher matcherBody = patternBody.matcher(splitContent);
+        String body = matcherBody.find() ? matcherBody.group(1) : UNDEF;
+        body = parseString(body);
+        builder.setBody(body);
+
+        Pattern patternTags = Pattern.compile("class=\"inline-list__item-link post__tag  \">"
+                + ALL + "</a></li>");
+        Matcher matcherTags = patternTags.matcher(splitContent);
+        StringBuilder tags = new StringBuilder();
+        while (matcherTags.find()) {
+            tags.append(matcherTags.group(1)).append(", ");
+        }
+        tags.delete(tags.length() - 2, tags.length());
+        builder.setTags(tags.toString());
+
         return builder.build();
+    }
+
+    private String parseString(String s) {
+        String res;
+        res = s.replace("<br/>", "\n");
+        return res;
     }
 }

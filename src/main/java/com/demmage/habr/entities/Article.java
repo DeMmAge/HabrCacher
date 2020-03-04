@@ -104,6 +104,11 @@ public class Article {
             return this;
         }
 
+        public Builder setBody(String body) {
+            article.body = body;
+            return this;
+        }
+
         public Article build() {
             return article;
         }

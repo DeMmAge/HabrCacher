@@ -12,17 +12,16 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        HabrDao dao = new HabrDaoImpl();
         new TableCreator().createTable();
+
+        HabrDao dao = new HabrDaoImpl();
         PageDownloader downloader = new PageDownloader();
         ArticleParser parser = new ArticleParser();
 
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= 1000; i++) {
             try {
                 String page = downloader.download(i);
-                Article article = parser.parse(page);
-                article.setHabrId(String.valueOf(i));
-                System.out.println(article);
+                Article article = parser.parse(page, i);
                 dao.cacheArticle(article);
                 System.out.println("Cached post " + i);
             } catch (IOException e) {
