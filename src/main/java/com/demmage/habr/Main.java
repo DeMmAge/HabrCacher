@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
         HabrCacher cacher = new HabrCacher();
-        for (int i = 1; i <= 99999; i++) {
+        for (int i = 1; i <= 1000; i++) {
             if (cacher.checkPost(i)) {
                 cacher.cache(i);
                 System.out.println("Cached " + i);
