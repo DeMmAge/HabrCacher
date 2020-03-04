@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Downloader {
 
-    public String download(String link) {
+    public String download(String link) throws IOException {
         try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -20,8 +20,7 @@ public class Downloader {
             }
             return result.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 }

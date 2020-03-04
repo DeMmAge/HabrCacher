@@ -25,9 +25,10 @@ public class DaoFactory {
         try {
             Class.forName(properties.getProperty("driver"));
             connection = DriverManager.getConnection(properties.getProperty("url"),
-                    properties.getProperty("user"),
-                    properties.getProperty("password"));
-        } catch (ClassNotFoundException | SQLException e) {
+                    properties.getProperty("user"), properties.getProperty("password"));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return connection;
