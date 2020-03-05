@@ -40,7 +40,7 @@ public class ArticleParser {
         builder.setTitle(matcherTitle.find() ? matcherTitle.group(1) : UNDEF);
 
         Pattern patternBody = Pattern.compile("div class=\"post__text post__text-html post__text_v1\" id=\"post-content-body\" data-io-article-url=\"https://habr.com/ru/post/" + id + "/\">"
-                + ALL + "</div>");
+                + ALL + "</div>"); // TODO: sometimes undef while parsing 440 3 15 23 83 99 101 103
         Matcher matcherBody = patternBody.matcher(splitContent);
         String body = matcherBody.find() ? matcherBody.group(1) : UNDEF;
         body = parseString(body);

@@ -11,7 +11,6 @@ public class HabrDaoImpl implements HabrDao {
 
     private DaoFactory daoFactory = new DaoFactory();
 
-
     public HabrDaoImpl() {
 
     }
