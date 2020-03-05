@@ -39,17 +39,21 @@ public class HabrCacher {
         return -1;
     }
 
-    public boolean checkPost(int post) {
+    private boolean checkPost(int post) {
         return getPostCode(post) == 200;
     }
 
     public boolean cache(int post) {
-        try {
-            Article article = parser.parse(downloader.download(post), post); // TODO: Cached page
-            dao.cacheArticle(article);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (checkPost(post)) {
+            try {
+                Article article = parser.parse(downloader.download(post), post); // TODO: Cached page
+                dao.cacheArticle(article);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 }

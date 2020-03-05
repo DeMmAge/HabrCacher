@@ -28,8 +28,7 @@ public class Main {
         HabrCacher cacher = new HabrCacher();
         backup.start();
         for (int i = Integer.parseInt(args[0]); i <= Integer.parseInt(args[1]); i++) {
-            if (cacher.checkPost(i)) {
-                cacher.cache(i);
+            if (cacher.cache(i)) {
                 log("Cached " + i);
             } else {
                 log("Forbidden " + i);
