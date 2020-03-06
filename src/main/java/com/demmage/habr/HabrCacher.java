@@ -39,7 +39,7 @@ public class HabrCacher {
         return -1;
     }
 
-    private boolean checkPost(int post) {
+    public boolean checkPost(int post) {
         return getPostCode(post) == 200;
     }
 
