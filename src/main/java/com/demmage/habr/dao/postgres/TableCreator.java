@@ -11,7 +11,7 @@ public class TableCreator {
     private DaoFactory daoFactory = new DaoFactory();
 
     private static final String SQL_DB_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS articles (id serial primary key, habr_id varchar(7) unique," +
-            "title varchar(200), author varchar(50), tags varchar(300), body text, date varchar(25), cached_date varchar(30));";
+            "title varchar(200), author varchar(50), tags varchar(500), body text, date varchar(25), cached_date varchar(30));";
 
     public void createTable() {
         Connection connection = null;
